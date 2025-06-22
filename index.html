@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>30s Work / 5s Rest Timer</title>
+  <style>
+    body { text-align: center; font-family: sans-serif; padding-top: 50px; }
+    #timer { font-size: 80px; margin: 20px; }
+    #status { font-size: 24px; color: #666; }
+  </style>
+</head>
+<body>
+  <div id="status">Work</div>
+  <div id="timer">30</div>
+
+  <script>
+    let workDuration = 30;
+    let restDuration = 5;
+    let timeLeft = workDuration;
+    let isWork = true;
+
+    const timerEl = document.getElementById('timer');
+    const statusEl = document.getElementById('status');
+
+    function startTimer() {
+      updateDisplay();
+
+      let intervalId = setInterval(() => {
+        timeLeft--;
+        if (timeLeft === 0) {
+          clearInterval(intervalId);
+          isWork = !isWork;
+          timeLeft = isWork ? workDuration : restDuration;
+          statusEl.textContent = isWork ? "Work" : "Rest";
+          updateDisplay(); // show the new time immediately
+          startTimer();
+        } else {
+          updateDisplay();
+        }
+      }, 1000);
+    }
+
+    function updateDisplay() {
+      timerEl.textContent = timeLeft;
+    }
+
+    statusEl.textContent = "Work";
+    timeLeft = workDuration;
+    updateDisplay();
+    startTimer();
+  </script>
+</body>
+</html>
